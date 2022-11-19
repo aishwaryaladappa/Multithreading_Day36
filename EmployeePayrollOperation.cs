@@ -6,7 +6,37 @@ using System.Threading.Tasks;
 
 namespace MultiThread
 {
-    internal class EmployeePayrollOperation
+    public class EmployeePayrollOperation
     {
+        List<EmployeeDetails> employeeDetails = new List<EmployeeDetails>();
+        public void AddEmployeeToPayroll(List<EmployeeDetails> listemp)
+        {
+            listemp.ForEach(empdata =>
+            {
+                Console.WriteLine("employee being added:" + empdata.EmployeeName);
+                this.AddEmployeeToPayroll(empdata);
+                Console.WriteLine("employee added:" + empdata.EmployeeName);
+            });
+
+        }
+
+        private void AddEmployeeToPayroll(EmployeeDetails emp)
+        {
+            employeeDetails.Add(emp);
+        }
+        public void addEmployeeToPayrollThread(List<EmployeeDetails> listempdetails1)
+        {
+            listempdetails1.ForEach(empdata =>
+            {
+                Task thread = new Task(() =>
+                {
+                    Console.WriteLine("employee being added:" + empdata.EmployeeName);
+                    this.AddEmployeeToPayroll(empdata);
+                    Console.WriteLine("employee added:" + empdata.EmployeeName);
+                });
+                thread.Start();
+
+            });
+        }
     }
 }
